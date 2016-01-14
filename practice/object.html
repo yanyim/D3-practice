@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data</title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"/>
+    <script src="/lib/d3/d3.js"></script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <style>
+        .h-bar {
+            min-height: 15px;
+            min-width: 10px;
+            background-color: steelblue;
+            margin-bottom: 2px;
+            font-size: 11px;
+            color: #f0f8ff;
+            text-align: right;
+            padding-right: 2px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="canvas" class="col-md-10" style="height: 600px;background-color: #f9f9f9">
+
+
+        </div>
+        <div id="operate" class="col-md-2" style="height: 600px;background-color: #f0ad4e">
+            <!--<ul>
+                <li><a class="btn" id="enter"> enter</a></li>
+                <li><a class="btn" id="exit"> exit</a></li>
+            </ul>-->
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(
+            function () {
+                var data = [
+                    {width: 10, color: 1},
+                    {width: 24, color: 2},
+                    {width: 50, color: 3},
+                    {width: 13, color: 4},
+                    {width: 10, color: 1},
+                    {width: 24, color: 2},
+                    {width: 50, color: 3},
+                    {width: 13, color: 4},
+                    {width: 10, color: 1},
+                    {width: 24, color: 2},
+                    {width: 50, color: 3},
+                    {width: 13, color: 4},
+                    {width: 10, color: 1},
+                    {width: 24, color: 2},
+                    {width: 50, color: 3},
+                    {width: 13, color: 4}
+                ];
+
+                var colorScale = d3.scale.linear().domain([0, 100]).range(["#add8e6", "blue"]);
+
+
+                var render = function () {
+
+                    d3.select('#canvas').selectAll('div.h-bar').data(data).enter().append('div').attr('class', 'h-bar').append('span');
+
+                    d3.select('#canvas').selectAll('div.h-bar').style('width', function (d) {
+                        return (d.width * 5) + 'px';
+                    }).style("background-color", function (d) {
+                        return colorScale(d.color);
+                    }).select('span').text(function (d) {
+                        return d.width;
+                    });
+
+                    d3.select('#canvas').selectAll('div.h-bar').data(data).exit().remove();
+                };
+
+                setInterval(function () {
+                    data.shift();
+                    data.push({
+                        width: Math.round(Math.random() * 100),
+                        color: Math.random() * 100
+
+                    });
+                    render();
+                }, 1500);
+                render();
+
+            }
+    )
+
+</script>
+</html>

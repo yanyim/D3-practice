@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>select</title>
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"/>
+    <script src="/lib/d3/d3.js"></script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="canvas" class="col-md-10" style="height: 600px;background-color: #f9f9f9">
+            <p id="header"> 测试P1</p>
+            <p> 测试P2</p>
+            <p> 测试P3</p>
+
+            <div class="content">
+                <H4>HHHHHHHHHH</H4>
+                <H4>EEEEEEEEEE</H4>
+                <H4>LLLLLLLLLL</H4>
+                <H4>LLLLLLLLLL</H4>
+                <H4>OOOOOOOOOO</H4>
+            </div>
+
+        </div>
+        <div id="operate" class="col-md-2" style="height: 600px;background-color: #f0ad4e">
+            <a class="btn" id="selectId"> 选择头</a>
+            <a class="btn" id="selectP"> 选择多个</a>
+            <a class="btn" id="selectChild"> 选择子</a>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    $(document).ready(
+            function () {
+                var colors = d3.scale.category20();
+
+                $("#selectId").click(function () {
+                    d3.select("p#header").text("HELLO WORLD " + Math.random()).style("color",colors(Math.random() * 10)).classed("goo",true);
+                });
+
+                $("#selectP").click(function () {  //多次调用append也不会重复,原因是调用了text
+                    d3.selectAll("p").text("HELLO WORLD " + Math.random()).style("color",function(){
+                      return colors(Math.random() * 10);
+                    }).classed("goo",true).each(function(d,i){
+                        d3.select(this).append("h1").text(Math.random() * 10);
+                    });
+                });
+
+                $("#selectChild").click(function () {  //多次调用append也不会重复,原因是调用了text
+                    d3.selectAll(".content > h4").style("color",function(){
+                        return colors(Math.random() * 10);
+                    }).classed("goo",true);
+                });
+
+
+
+
+
+            }
+    );
+
+
+</script>
+</html>

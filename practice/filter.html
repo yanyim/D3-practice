@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data</title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"/>
+    <script src="/lib/d3/d3.js"></script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <style>
+        .h-bar {
+            min-height: 15px;
+            min-width: 10px;
+            background-color: steelblue;
+            margin-bottom: 2px;
+            font-size: 11px;
+            color: #f0f8ff;
+            text-align: right;
+            padding-right: 2px;
+            display: none;
+        }
+
+        .h-bar.selected {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="canvas" class="col-md-10" style="height: 600px;background-color: #f9f9f9">
+
+
+        </div>
+        <div id="operate" class="col-md-2" style="height: 600px;background-color: #f0ad4e">
+            <ul>
+                <li><a class="btn" id="Retail"> Retail</a></li>
+                <li><a class="btn" id="Gas"> Gas</a></li>
+                <li><a class="btn" id="Dining"> Dining</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(
+            function () {
+                var data = [ // <-A
+                    {expense: 10, category: "Retail"},
+                    {expense: 15, category: "Gas"},
+                    {expense: 30, category: "Retail"},
+                    {expense: 50, category: "Dining"},
+                    {expense: 80, category: "Gas"},
+                    {expense: 65, category: "Retail"},
+                    {expense: 55, category: "Gas"},
+                    {expense: 30, category: "Dining"},
+                    {expense: 20, category: "Retail"},
+                    {expense: 10, category: "Dining"},
+                    {expense: 8, category: "Gas"}
+                ];
+
+                var colorScale = d3.scale.linear().domain([0, 100]).range(["#add8e6", "blue"]);
+
+
+                var render = function (category) {
+
+                    d3.select('#canvas').selectAll('div.h-bar').data(data).enter().append('div').attr('class', 'h-bar').append('span');
+
+                    d3.select('#canvas').selectAll('div.h-bar').style('width', function (d) {
+                        return (d.expense * 5) + 'px';
+                    }).style("background-color", function (d,i) {
+                        return colorScale(i * 5);
+                    }).classed("selected",false).select('span').text(function (d) {
+                        return d.category;
+                    });
+
+                    d3.select('#canvas').selectAll('div.h-bar').data(data).exit().remove();
+
+                    d3.select('#canvas').selectAll('div.h-bar').filter(function(d){
+                        if(category){
+                            return d.category === category;
+                        }else{
+                            return true;
+                        }
+
+                    }).classed('selected',true);
+                };
+
+                var change = function(category){
+                    render(category);
+                };
+
+                $('#Retail').click(function(){
+                    change('Retail');
+                });
+
+                $('#Gas').click(function(){
+                    change('Gas');
+                });
+                $('#Dining').click(function(){
+                    change('Dining');
+                });
+
+                render();
+            }
+    )
+
+</script>
+</html>

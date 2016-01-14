@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data</title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.css"/>
+    <script src="/lib/d3/d3.js"></script>
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="canvas" class="col-md-10" style="height: 600px;background-color: #f9f9f9">
+            <span>FONT Interpolation</span>
+
+        </div>
+        <div id="operate" class="col-md-2" style="height: 600px;background-color: #f0ad4e">
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    $(document).ready(
+            function () {
+                var max = 12;
+                var data = [];
+                var sizeScala = d3.scale.linear().domain([0, max]).range(["italic bold 12px/30px Georgia,serif", "italic bold 120px/180px Georgia,serif"]);
+
+                for (var i = 0; i < max; ++i) {
+                    data.push(i);
+                }
+
+                var render = function (data, scale, selector) {
+                    d3.select(selector).selectAll("div.cell").data(data).enter().append('div').classed('cell', true).append("span");
+                    d3.select(selector).selectAll("div.cell").data(data).exit().remove();
+                    d3.select(selector).selectAll("div.cell").data(data).style("display", "inline-block").select("span").style("font", function (d, i) {
+                        console.log(scale(d));
+                        return scale(d);
+                    }).text(function (d, i) {
+                        return i
+                    });
+                }
+                render(data, sizeScala, "#canvas");
+            }
+    )
+
+</script>
+</html>
