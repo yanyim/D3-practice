@@ -83,9 +83,9 @@
             svg.attr("height", Math.round(targetWidth / aspect));
         }
     }
+
     nv.addGraph(function () {
         chart = nv.models.lineChart();
-
 
 
         chart.useInteractiveGuideline(true);
@@ -105,18 +105,13 @@
                 .tickFormat(d3.format(',.2f'));
 
 
-
         d3.select('#zoomIn').on('click', zoomIn);
         d3.select('#zoomOut').on('click', zoomOut);
-
-
 
 
         // This resize simply sets the SVG's dimensions, without a need to recall the chart code
         // Resizing because of the viewbox and perserveAspectRatio settings
         // This scales the interior of the chart unlike the above
-
-
         return chart;
     });
 
@@ -141,9 +136,10 @@
                 color: "#2ca02c"
             }
         ];
-    };
+    }
 
-    setInterval(function(){
+    setInterval(function () {
+        console.log(d3.select('#chart1 svg'));
         d3.select('#chart1 svg')
                 .attr('perserveAspectRatio', 'xMinYMid')
                 .attr('width', width)
@@ -154,8 +150,7 @@
         resizeChart();
 
         nv.utils.windowResize(resizeChart);
-
-    },1000);
+    }, 1000);
 
 
 </script>
